@@ -14,6 +14,10 @@
                v-model="password"/>
     </div>
   </div>
+  <div slot="buttons">
+    <q-btn push color="black" label="Login" class="q-ma-sm" @click="login"/>
+    <q-btn push  label="Signup" class="q-ma-sm" to="/signup"/>
+  </div>
 
 </slot-form>
 </q-page>
@@ -44,6 +48,16 @@
                 to:'/signup'
               }
             ]
+          }
+      },
+      methods:{
+          login(){
+            const vm = this;
+            this.$axios
+              .post('https://citymorgue.herokuapp.com/users/login',{email:vm.email,password:vm.password})
+              .then((res)=>{localStorage.setItem('token',res.data.token);vm.$router.push('/home')})
+              .catch(err=>{vm.error = err.response.data.err.message})
+
           }
       }
     }

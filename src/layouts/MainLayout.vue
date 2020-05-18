@@ -15,7 +15,7 @@
       <q-scroll-area class="fit">
         <q-list v-for="(menuItem, index) in menuList" :key="index">
 
-          <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple>
+          <q-item clickable :active="menuItem.label === 'Outbox'" v-ripple :to="menuItem.path">
             <q-item-section avatar>
               <q-icon :name="menuItem.icon" />
             </q-item-section>
@@ -34,11 +34,15 @@
       <router-view />
     </q-page-container>
 
+
+
   </q-layout>
 </template>
 
 <script>
+  import UploadImageForm from "../components/UploadImageForm";
   export default {
+    components: {UploadImageForm},
     data () {
       return {
         left: false,
@@ -47,15 +51,21 @@
             icon: 'home',
             label: 'Home',
             separator: true,
-            path:'',
+            path:'/home',
           },
            {
-            icon: 'query_builder',
-            label: 'History',
-            separator: true,
-            path:'/history',
-
+             icon: 'history',
+             label: 'history',
+             separator: true,
+             path:'/history',
            },
+           {
+             icon: 'phone',
+             label: 'contact us',
+             separator: true,
+             path:'/contact',
+           },
+
            {
              icon: 'info',
              iconColor: 'primary',
@@ -74,6 +84,12 @@
         ]
 
       }
+    },
+    methods:{
+      gotoRoute(){
+
+      },
+
     }
   }
 </script>

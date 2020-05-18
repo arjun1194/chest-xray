@@ -20,12 +20,10 @@
               <slot name="fields"></slot>
             </q-card-section>
 
+            <q-card-section>
+              <slot name="buttons"></slot>
+            </q-card-section>
 
-            <div class="row justify-center">
-              <div class="col-12" v-for="item in buttons" :key="item.id">
-                <q-btn push :color="item.color" :label="item.label" :class="item.class" :to="item.to"/>
-              </div>
-            </div>
           </q-card>
         </div>
       </div>
@@ -38,7 +36,6 @@
         name: "SlotForm",
         props:{
           fields:[],
-          buttons:[],
         }
     }
 </script>

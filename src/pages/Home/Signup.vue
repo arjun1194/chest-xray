@@ -1,8 +1,8 @@
 <template>
   <q-page>
-    <slot-form :buttons="buttons">
+    <slot-form>
       <div slot="title">Sign up</div>
-      <div slot="error">{{error}}</div>
+      <div slot="error">{{checkError}} {{error}}</div>
       <div slot="fields">
 
         <q-input
@@ -24,9 +24,13 @@
           v-model="confirmPassword"
           class="justify center q-ma-lg"
           dense placeholder="Confirm Password"/>
-
+      </div>
+      <div slot="buttons">
+        <q-btn push color="black" label="create account" class="q-ma-sm" @click="signup"/>
 
       </div>
+
+
 
     </slot-form>
   </q-page>
@@ -45,15 +49,31 @@
         password:'',
         confirmPassword:'',
         error:'',
-        buttons:[
-          {
-            label:'Create Account',
-            class:'q-ma-sm',
-            color:'primary',
-            to:'/home'
-          },
 
-        ]
+      }
+    },
+    methods: {
+      signup() {
+        const vm = this;
+        this.$axios.post('https://citymorgue.herokuapp.com/users/signup', {
+            name: vm.fullname,
+            email: vm.email,
+            password: vm.password
+          }).then((res) => {
+            vm.$router.push('/')
+            vm.$q.notify({
+            message: 'Account Successfully Created,You can login now!',});})
+          .catch(err=>err.response.data.err.errors.map(e=>vm.error+=e.message+'\n'))
+      }
+    },
+    computed:{
+      checkError(){
+        if(!this.fullname)  return 'Please Provide Full Name';
+        if(!this.email) return 'Please Provide Email';
+        if(!this.password) return 'Please Provide Password';
+        if(!this.confirmPassword) return 'Please Confirm Password';
+        if(this.password!==this.confirmPassword) return 'Passwords donot match';
+        else return '';
       }
     }
   }
